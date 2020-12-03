@@ -12,6 +12,8 @@ const partnerRouter = require("./routes/partnerRouter");
 
 const session = require("express-session");
 const FileStore = require("session-file-store")(session);
+const passport = require("passport");
+const authenticate = require("./authenticate");
 
 const mongoose = require("mongoose");
 const { runInNewContext } = require("vm");
@@ -48,24 +50,22 @@ app.use(
     store: new FileStore(),
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 function auth(req, res, next) {
-  console.log(req.headers);
+  console.log(req.user);
 
-  if (!req.session.user) {
+  if (!req.user) {
     const err = new Error("Your not authorized");
     err.status = 401;
     return next(err);
   } else {
-    if (req.session.user === "authenticated") {
-      return next();
-    } else {
-      const err = new Error("Your not authorized!");
-      err.status = 401;
-      return next(err);
-    }
+    return next();
   }
 }
 
