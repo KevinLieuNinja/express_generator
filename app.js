@@ -8,6 +8,7 @@ var usersRouter = require("./routes/users");
 const campsiteRouter = require("./routes/campsiteRouter");
 const promotionRouter = require("./routes/promotionRouter");
 const partnerRouter = require("./routes/partnerRouter");
+const uploadRouter = require("./routes/uploadRouter");
 
 const passport = require("passport");
 const config = require("./config");
@@ -31,7 +32,7 @@ connect.then(
 
 var app = express();
 
-app.all("*", (req, res, nect) => {
+app.all("*", (req, res, next) => {
   if (req.secure) {
     return next();
   } else {
@@ -52,6 +53,8 @@ app.set("view engine", "jade");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use("imageUpload", uploadRouter);
 
 app.use(passport.initialize());
 
