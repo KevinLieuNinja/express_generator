@@ -9,6 +9,7 @@ const campsiteRouter = require("./routes/campsiteRouter");
 const promotionRouter = require("./routes/promotionRouter");
 const partnerRouter = require("./routes/partnerRouter");
 const uploadRouter = require("./routes/uploadRouter");
+const favoriteRouter = require("./routes/favoriteRouter");
 
 const passport = require("passport");
 const config = require("./config");
@@ -66,6 +67,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/campsites", campsiteRouter);
 app.use("/promotions", promotionRouter);
 app.use("/partners", partnerRouter);
+
+// use the favoriteRouter to handle all the incoming calls
+// that the server receives on /favorites
+app.use("/favorites", favoriteRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
